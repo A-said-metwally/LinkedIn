@@ -1,23 +1,54 @@
-import logo from './logo.svg';
+import React , {useState} from 'react'
+import Login from './Login';
+import Loading from "./Loading"
+import Mainpage from "./Mainpage"
+
+import { users } from './Data';
+
 import './App.css';
+import "./style.css"
+import "./main.js"
 
 function App() {
+
+  const [Routing , setRouting] = useState("login")
+  const [Username , setUsername] = useState()
+  const [Userpass , setUserpass] = useState()
+  const [ValidationState ,setValidation] = useState(true)
+
+  function x(){
+    setRouting("mainpage")
+  }
+
+  const changeUser = (e)=>{
+    setUsername(e.target.value)
+  }
+  const changePass = (p)=>{
+    setUserpass(p.target.value)
+  }
+  
+  const Inter = (e)=>{
+    e.preventDefault()
+    let user = users.filter((user)=>user.accountName === Username )
+    let pass = user[0].pass
+      if(pass === Userpass){
+          setRouting("loading")
+          setTimeout(x , 3000)
+      }else{
+        setValidation(false)
+        setUsername("")
+        setUserpass("")
+      }
+  }
+
+  let all = {Inter ,changeUser, changePass ,ValidationState ,Username,Userpass}
+
   return (
+
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* {Routing === "login" && <Login {...all} />}
+      {Routing === "loading" && <Loading/>} */}
+      {<Mainpage/>}
     </div>
   );
 }
